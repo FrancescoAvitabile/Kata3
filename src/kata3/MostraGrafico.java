@@ -18,9 +18,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
  */
 public class MostraGrafico extends JFrame{
     
+    private final Histogram<String> histogram;
     
-    public MostraGrafico(String name){
+    public MostraGrafico(String name,Histogram<String> histogram){
         super(name);
+        this.histogram = histogram;
         setSize(800,600);
         add(createPanel());
         pack();
@@ -37,7 +39,7 @@ public class MostraGrafico extends JFrame{
     
     
     private JFreeChart createChart(DefaultCategoryDataset dataSet){
-       JFreeChart chart = org.jfree.chart.ChartFactory.createBarChart("Grafico", "Dominio email", "numero di mail", createDataset() , PlotOrientation.HORIZONTAL, false, rootPaneCheckingEnabled, rootPaneCheckingEnabled);
+       JFreeChart chart = org.jfree.chart.ChartFactory.createBarChart("Grafico", "Dominio email", "Numero di mail", createDataset() , PlotOrientation.HORIZONTAL, true, rootPaneCheckingEnabled, rootPaneCheckingEnabled);
         return chart;
         
         
@@ -46,12 +48,11 @@ public class MostraGrafico extends JFrame{
     
     private DefaultCategoryDataset createDataset(){
         
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(23263, "", "GMAIL.COM");
-        dataset.addValue(45532, "", "HOTMAIL.COM");
-        dataset.addValue(12415, "", "ALICEMAIL.COM");
-        dataset.addValue(44311, "", "LIVE.COM");
-        return dataset;
+        DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+        for (String key  : histogram.keySet()) {
+            dataSet.addValue(histogram.get(key),key, key);
+        }
+        return dataSet;
     }
     
     
